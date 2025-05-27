@@ -7,36 +7,81 @@ class intensidades:
 
     def __init__(self):
         
-        self.imagenI_0 = None
-        self.imagenI_90 = None
-        self.imagenI_45 = None
-        self.imagenI_135 = None
-        self.imagen_RHC = None
-        self.imagen_LHC = None
+        self.imagenI_1 = None
+        self.imagenI_2 = None
+        self.imagenI_3 = None
+        self.imagenI_4 = None
+        self.imagenI_5 = None
+        self.imagenI_6 = None
+        self.imagenI_7 = None
+        self.imagenI_8 = None
+        self.imagenI_9 = None
         self.s_0 = None
         self.s_1 = None
         self.s_2 = None
         self.s_3 = None
 
-    def parameters(self, nombre_I_0:str = None, nombre_I_90:str = None, nombre_I_45:str = None, nombre_I_135:str = None, nombre_I_RHC:str = None, nombre_I_LHC:str = None):
-    
-        self.imagenI_0 = np.array(Image.open(nombre_I_0).convert('L'), dtype=np.int32)
-
-        self.imagenI_90 = np.array(Image.open(nombre_I_90).convert('L'), dtype=np.int32)
+    def parameters(self, I_1:str = None, 
+                   I_2:str = None, 
+                   I_3:str = None, 
+                   I_4:str = None, 
+                   I_5:str = None, 
+                   I_6:str = None,
+                   I_7:str = None,
+                   I_8:str = None,
+                   I_9:str = None,
+                   ):
         
-        self.imagenI_45 = np.array(Image.open(nombre_I_45).convert('L'), dtype=np.int32)
-        
-        self.imagenI_135 = np.array(Image.open(nombre_I_135).convert('L'), dtype=np.int32)
+        self.imagenI_1 = np.array(Image.open(I_1).convert('L'), dtype=np.int32)
 
-        self.imagen_RHC = np.array(Image.open(nombre_I_RHC).convert('L'), dtype=np.int32)
+        self.imagenI_2 = np.array(Image.open(I_2).convert('L'), dtype=np.int32)
 
-        self.imagen_LHC = np.array(Image.open(nombre_I_LHC).convert('L'), dtype=np.int32)
-        a = np.sum(self.imagenI_45)
-        b = np.sum(self.imagenI_135)
+        self.imagenI_3 = np.array(Image.open(I_3).convert('L'), dtype=np.int32)
+
+        self.imagenI_4 = np.array(Image.open(I_4).convert('L'), dtype=np.int32)
+
+        self.imagenI_5 = np.array(Image.open(I_5).convert('L'), dtype=np.int32)
+
+        self.imagenI_6 = np.array(Image.open(I_6).convert('L'), dtype=np.int32)
+
+        self.imagenI_7 = np.array(Image.open(I_7).convert('L'), dtype=np.int32)
+
+        self.imagenI_8 = np.array(Image.open(I_8).convert('L'), dtype=np.int32)
+
+        self.imagenI_9 = np.array(Image.open(I_9).convert('L'), dtype=np.int32)
+
+        intensidades = [np.sum(self.imagenI_1), np.sum(self.imagenI_2), 
+                        np.sum(self.imagenI_3), np.sum(self.imagenI_4), 
+                        np.sum(self.imagenI_5), np.sum(self.imagenI_6), 
+                        np.sum(self.imagenI_7), np.sum(self.imagenI_8), 
+                        np.sum(self.imagenI_9)]
+
+        A = 0
+        B = 0
+        C = 0
+        D = 0
+
+        for i in range(0, len(intensidades)):
+            A += intensidades[i]
+        A = A * 2/(len(intensidades))
+
+        for i in range(0, len(intensidades)):
+            B += intensidades[i] * np.sin((2*i*np.pi)/len(intensidades))
+        B = B * 4/(len(intensidades))
+
+        for i in range(0, len(intensidades)):
+            C += intensidades[i] * np.cos((4*i*np.pi)/len(intensidades))
+        C = C * 4/(len(intensidades))
+
+        for i in range(0, len(intensidades)):
+            D += intensidades[i] * np.sin((4*i*np.pi)/len(intensidades))
+        D = D * 4/(len(intensidades))
+
+
 
         self.s_0 = np.sum(self.imagenI_0) + np.sum(self.imagenI_90)
         self.s_1 = (np.sum(self.imagenI_0) - np.sum(self.imagenI_90))/self.s_0
-        self.s_2 = (a - b)/self.s_0
+        #self.s_2 = (a - b)/self.s_0
         self.s_3 = (np.sum(self.imagen_RHC) - np.sum(self.imagen_LHC))/self.s_0
         self.s_0 = 1
 
