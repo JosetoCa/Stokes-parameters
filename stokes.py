@@ -16,6 +16,8 @@ class intensidades:
         self.imagenI_7 = None
         self.imagenI_8 = None
         self.imagenI_9 = None
+        self.imagenI_10 = None
+
         self.s_0 = None
         self.s_1 = None
         self.s_2 = None
@@ -30,6 +32,7 @@ class intensidades:
                    I_7:str = None,
                    I_8:str = None,
                    I_9:str = None,
+                   I_10:str = None
                    ):
         
         self.imagenI_1 = np.array(Image.open(I_1).convert('L'), dtype=np.int32)
@@ -50,11 +53,14 @@ class intensidades:
 
         self.imagenI_9 = np.array(Image.open(I_9).convert('L'), dtype=np.int32)
 
+        self.imagenI_10 = np.array(Image.open(I_10).convert('L'), dtype=np.int32)
+
+
         intensidades = [np.sum(self.imagenI_1), np.sum(self.imagenI_2), 
                         np.sum(self.imagenI_3), np.sum(self.imagenI_4), 
                         np.sum(self.imagenI_5), np.sum(self.imagenI_6), 
                         np.sum(self.imagenI_7), np.sum(self.imagenI_8), 
-                        np.sum(self.imagenI_9)]
+                        np.sum(self.imagenI_9), np.sum(self.imagenI_10)]
 
         A = 0
         B = 0
@@ -79,10 +85,10 @@ class intensidades:
 
 
 
-        self.s_0 = np.sum(self.imagenI_0) + np.sum(self.imagenI_90)
-        self.s_1 = (np.sum(self.imagenI_0) - np.sum(self.imagenI_90))/self.s_0
-        #self.s_2 = (a - b)/self.s_0
-        self.s_3 = (np.sum(self.imagen_RHC) - np.sum(self.imagen_LHC))/self.s_0
+        self.s_0 = A - C
+        self.s_1 = 2* C / self.s_0
+        self.s_2 = 2 * D/self.s_0
+        self.s_3 = B / self.s_0
         self.s_0 = 1
 
 
