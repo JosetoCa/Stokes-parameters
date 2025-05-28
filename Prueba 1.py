@@ -2,9 +2,17 @@ import stokes
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-a = "C:\Proyectos\Stokes-parameters"
+a = r'C:\Proyectos\Speckle\Stokes-parameters\images'
 prueba1 = stokes.intensidades()
-prueba1.parameters(nombre_I_0= a+'\images\I_0_prueba.tif', nombre_I_90 = a+'\images\I_90_prueba.tif', nombre_I_45=a+'\images\I_45_prueba.tif', nombre_I_135=a+'\images\I_135_prueba.tif', nombre_I_RHC=a+'\images\I_RHC_prueba.tif', nombre_I_LHC=a+'\images\I_LHC_prueba.tif')
+
+media, desviacion = prueba1.darkness(ruta = r"C:\Proyectos\Stokes-parameters\images\Pol L Vert\darks")
+
+prueba1.parameters(ruta= r"C:\Proyectos\Stokes-parameters\images\Pol L Vert", 
+                    media_dark = media,
+                    desviacion_dark= desviacion)
 prueba2 = stokes.intensidades()
-prueba2.parameters(nombre_I_0= a+'\images\I_0_prueba1.tif', nombre_I_90 = a+'\images\I_90_prueba1.tif', nombre_I_45=a+'\images\I_45_prueba1.tif', nombre_I_135=a+'\images\I_135_prueba1.tif', nombre_I_RHC=a+'\images\I_RHC_prueba1.tif', nombre_I_LHC=a+'\images\I_LHC_prueba1.tif')
+
+media, desviacion = prueba2.darkness(ruta = r"C:\Proyectos\Stokes-parameters\images\Pol L H\darks")
+prueba2.parameters(ruta= r"C:\Proyectos\Stokes-parameters\images\Pol L H", 
+                    media_dark = media,
+                    desviacion_dark= desviacion)

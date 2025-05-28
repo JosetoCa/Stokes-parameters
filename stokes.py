@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
+import os
 
 
 class intensidades:
@@ -23,65 +24,47 @@ class intensidades:
         self.s_2 = None
         self.s_3 = None
 
-    def parameters(self, I_1:str = None, 
-                   I_2:str = None, 
-                   I_3:str = None, 
-                   I_4:str = None, 
-                   I_5:str = None, 
-                   I_6:str = None,
-                   I_7:str = None,
-                   I_8:str = None,
-                   I_9:str = None,
-                   I_10:str = None
+    def parameters(self,
+                   ruta:str = None,
+                   media_dark = None,
+                   desviacion_dark = None
                    ):
         
-        self.imagenI_1 = np.array(Image.open(I_1).convert('L'), dtype=np.int32)
+        archivos = [f for f in os.listdir(ruta) if f.endswith('.tif') ]
+        print(archivos)
+        imagenes = []
+        
 
-        self.imagenI_2 = np.array(Image.open(I_2).convert('L'), dtype=np.int32)
-
-        self.imagenI_3 = np.array(Image.open(I_3).convert('L'), dtype=np.int32)
-
-        self.imagenI_4 = np.array(Image.open(I_4).convert('L'), dtype=np.int32)
-
-        self.imagenI_5 = np.array(Image.open(I_5).convert('L'), dtype=np.int32)
-
-        self.imagenI_6 = np.array(Image.open(I_6).convert('L'), dtype=np.int32)
-
-        self.imagenI_7 = np.array(Image.open(I_7).convert('L'), dtype=np.int32)
-
-        self.imagenI_8 = np.array(Image.open(I_8).convert('L'), dtype=np.int32)
-
-        self.imagenI_9 = np.array(Image.open(I_9).convert('L'), dtype=np.int32)
-
-        self.imagenI_10 = np.array(Image.open(I_10).convert('L'), dtype=np.int32)
-
-
-        intensidades = [np.sum(self.imagenI_1), np.sum(self.imagenI_2), 
-                        np.sum(self.imagenI_3), np.sum(self.imagenI_4), 
-                        np.sum(self.imagenI_5), np.sum(self.imagenI_6), 
-                        np.sum(self.imagenI_7), np.sum(self.imagenI_8), 
-                        np.sum(self.imagenI_9), np.sum(self.imagenI_10)]
+        for archivo in archivos:
+            ruta_completa = os.path.join(ruta, archivo)
+            img = Image.open(ruta_completa).convert('L')
+            if media_dark is not None and desviacion_dark is not None:
+                img = np.array(img, dtype=np.int32)
+                img = (img - media_dark)
+                img = np.where(img <= media_dark - 2*desviacion_dark, 0, img)
+            imagenes.append(np.array(img, dtype=np.float32))
+        stack = np.stack(imagenes, axis = 0)
 
         A = 0
         B = 0
         C = 0
         D = 0
 
-        for i in range(0, len(intensidades)):
-            A += intensidades[i]
-        A = A * 2/(len(intensidades))
+        for i in range(10):
+            A += np.sum(stack[i])
+        A = A * 2/(10)
 
-        for i in range(0, len(intensidades)):
-            B += intensidades[i] * np.sin((2*i*np.pi)/len(intensidades))
-        B = B * 4/(len(intensidades))
+        for i in range(10):
+            B += np.sum(stack[i]) * np.sin((2*i*np.pi)/10)
+        B = B * 4/(10)
 
-        for i in range(0, len(intensidades)):
-            C += intensidades[i] * np.cos((4*i*np.pi)/len(intensidades))
-        C = C * 4/(len(intensidades))
+        for i in range(10):
+            C += np.sum(stack[i]) * np.cos((4*i*np.pi)/10)
+        C = C * 4/(10)
 
-        for i in range(0, len(intensidades)):
-            D += intensidades[i] * np.sin((4*i*np.pi)/len(intensidades))
-        D = D * 4/(len(intensidades))
+        for i in range(10):
+            D += np.sum(stack[i]) * np.sin((4*i*np.pi)/10)
+        D = D * 4/(10)
 
 
 
@@ -96,5 +79,28 @@ class intensidades:
         print("s_1: ", self.s_1)
         print("s_2: ", self.s_2)
         print("s_3: ", self.s_3)
+    
+    def darkness(self, ruta:str = None):
+        """ Lee las imágenes .tif en una carpeta y calcula media y desviación estándar de cada píxel.
+
+        Args:
+            ruta (str): Ruta de la carpeta con las imágenes .tif.
+        Returns:
+            media (ndarray): Imagen promedio (float32)
+            desviacion (ndarray): Imagen de desviación estándar (float32)
+        """
+        archivos = [f for f in os.listdir(ruta) if f.endswith('.tif') ]
+        imagenes = []
+
+        for archivo in archivos:
+            ruta_completa = os.path.join(ruta, archivo)
+            img = Image.open(ruta_completa).convert('L')
+            imagenes.append(np.array(img, dtype=np.float32))
+        stack = np.stack(imagenes, axis = 0)
+        media = np.mean(stack, axis = 0)
+        desviacion = np.std(stack, axis = 0)
+        
+        
+        return media, desviacion
 
 
