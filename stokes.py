@@ -31,7 +31,6 @@ class intensidades:
                    ):
         
         archivos = [f for f in os.listdir(ruta) if f.endswith('.tif') ]
-        print(archivos)
         imagenes = []
         
 
@@ -41,7 +40,7 @@ class intensidades:
             if media_dark is not None and desviacion_dark is not None:
                 img = np.array(img, dtype=np.int32)
                 img = (img - media_dark)
-                img = np.where(img <= media_dark - 2*desviacion_dark, 0, img)
+                img = np.where(img <= media_dark + 2*desviacion_dark, 0, img)
             imagenes.append(np.array(img, dtype=np.float32))
         stack = np.stack(imagenes, axis = 0)
 
