@@ -16,3 +16,16 @@ media, desviacion = prueba2.darkness(ruta = r"C:\Proyectos\Stokes-parameters\ima
 prueba2.parameters(ruta= r"C:\Proyectos\Stokes-parameters\images\Pol L H", 
                     media_dark = media,
                     desviacion_dark= desviacion)
+
+
+prueba3 = stokes.intensidades()
+media, desviacion = prueba3.darkness(ruta = r"C:\Proyectos\Stokes-parameters\images\Pol C I\darks")
+prueba3.parameters(ruta= r"C:\Proyectos\Stokes-parameters\images\Pol C I", 
+                    media_dark = media,
+                    desviacion_dark= desviacion)
+
+prueba4 = stokes.intensidades()
+media, desviacion = prueba4.darkness(ruta = r"C:\Proyectos\Stokes-parameters\images\Pol C D\darks")
+prueba3.parameters(ruta= r"C:\Proyectos\Stokes-parameters\images\Pol C D", 
+                    media_dark = media,
+                    desviacion_dark= desviacion)
